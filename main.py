@@ -50,7 +50,12 @@ for i in range(len(grid_2.grid)):
 draw = False
 i = 0
 
-
+def clear():
+    for i in range(len(grid_2.grid)):
+        for j in range(len(grid_2.grid[0])):
+            if(grid_2.grid[i][j].active != 1 and grid_2.grid[i][j] != 2 and grid_2.grid[i][j] != 3):
+                grid_2.grid[i][j] = Node(None, (i,j))
+    grid_2.repaint(screen, 600)
 astar = pygame.Rect(650, 300, 100, 40)
 dijkstra = pygame.Rect(650, 360, 100, 40)
 
@@ -86,18 +91,18 @@ while not game_over:
             pos = pygame.mouse.get_pos()
             draw = False
             if(astar.collidepoint(pos)):
-                x = grid_2.astar(False,screen)
-                for i in range(len(x)):
-                    pygame.draw.rect(screen, (0,0,255), pygame.Rect((grid_2.decrypt(x[i].pos), (15,15))))
+                apath = grid_2.astar(False,screen)
+                for i in range(len(apath)):
+                    pygame.draw.rect(screen, (0,0,255), pygame.Rect((grid_2.decrypt(apath[i].pos), (15,15))))
                 aDraw = False
             elif(dijkstra.collidepoint(pos)):
-                x = grid_2.dijkstra(False,screen)
-                for i in range(len(x)):
-                    pygame.draw.rect(screen, (0,0,255), pygame.Rect((grid_2.decrypt(x[i].pos), (15,15))))
+                dpath = grid_2.dijkstra(False,screen)
+                for i in range(len(dpath)):
+                    pygame.draw.rect(screen, (0,0,255), pygame.Rect((grid_2.decrypt(dpath[i].pos), (15,15))))
                 dDraw = False
         if event.type == pygame.KEYDOWN:
             if event.key == K_d:
-                grid_2.repaint(screen, 600)
+                clear()
                 
     if draw:
         pos = pygame.mouse.get_pos()

@@ -84,6 +84,7 @@ class Grid:
                     count = 0
                     path.append(current)
                     while (current.parent != None):
+                        
                         path.append(current.parent)
                         current = current.parent
                         count +=1
