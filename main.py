@@ -1,9 +1,8 @@
 import sys
 from node import Node
 from grid import Grid
-import pygame, random
-import numpy as np
-from pygame.constants import K_a, K_d
+import pygame
+from pygame.constants import K_d
 import pygame.freetype
 
 pygame.init()
@@ -60,9 +59,25 @@ astar = pygame.Rect(650, 300, 100, 40)
 dijkstra = pygame.Rect(650, 360, 100, 40)
 
 Font = pygame.freetype.SysFont('Sans', 16)
+titleFont = pygame.freetype.SysFont('Sans', 32)
 
 aDraw = False
 dDraw = False
+
+title1 = titleFont.get_rect("Pathfinding")
+twidth = title1.width
+theight = title1.height
+title1.center = ((600+(200 - twidth)/2),5)
+titleFont.render_to(screen, title1.center, "Pathfinding", (0,0,0))
+
+
+title2 = titleFont.get_rect("Visualization")
+t2width = title2.width
+t2height = title2.height
+
+title2.center = ((600+(200 - t2width)/2),theight + 10)
+titleFont.render_to(screen, title2.center, "Visualization", (0,0,0))
+
 while not game_over:
     pygame.event.pump()
     for event in pygame.event.get():
@@ -93,12 +108,13 @@ while not game_over:
             if(astar.collidepoint(pos)):
                 apath = grid_2.astar(False,screen)
                 for i in range(len(apath)):
-                    pygame.draw.rect(screen, (0,0,255), pygame.Rect((grid_2.decrypt(apath[i].pos), (15,15))))
+                    pygame.draw.rect(screen, (169, 8, 194), pygame.Rect((grid_2.decrypt(apath[i].pos), (15,15))))
                 aDraw = False
             elif(dijkstra.collidepoint(pos)):
                 dpath = grid_2.dijkstra(False,screen)
                 for i in range(len(dpath)):
-                    pygame.draw.rect(screen, (0,0,255), pygame.Rect((grid_2.decrypt(dpath[i].pos), (15,15))))
+                    pygame.draw.rect(screen, (169, 8, 194), pygame.Rect((grid_2.decrypt(dpath[i].pos), (15,15))))
+                    
                 dDraw = False
         if event.type == pygame.KEYDOWN:
             if event.key == K_d:
@@ -119,6 +135,9 @@ while not game_over:
         pygame.draw.rect(screen,(149, 48, 217),dijkstra)
     else:
         pygame.draw.rect(screen,(128, 38, 189),dijkstra)
+
+    
+
 
 
     astar_rect = Font.get_rect("A* Search")

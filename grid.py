@@ -10,6 +10,7 @@ class Grid:
         self.startingPos = (0,0)
         self.endPos = (0,0)
     def repaint(self, screen, height):
+        titleFont = pygame.freetype.SysFont('Sans', 32)
         screen.fill((255,255,255))
         for i in range(int(height/15)):
             pygame.draw.line(screen, (0,0,0), (i*15,0), (i*15,height))
@@ -19,6 +20,18 @@ class Grid:
 
         self.draw(screen)
 
+        title1 = titleFont.get_rect("Pathfinding")
+        twidth = title1.width
+        theight = title1.height
+        title1.center = ((600+(200 - twidth)/2),5)
+        titleFont.render_to(screen, title1.center, "Pathfinding", (0,0,0))
+
+
+        title2 = titleFont.get_rect("Visualization")
+        t2width = title2.width
+        t2height = title2.height
+        title2.center = ((600+(200 - t2width)/2),theight + 10)
+        titleFont.render_to(screen, title2.center, "Visualization", (0,0,0))
 
     def draw(self,screen):
         for i in range(len(self.grid)):
