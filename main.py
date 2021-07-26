@@ -2,7 +2,7 @@ import sys
 from node import Node
 from grid import Grid
 import pygame
-from pygame.constants import K_d
+from pygame.constants import K_c, K_d
 import pygame.freetype
 
 pygame.init()
@@ -117,7 +117,7 @@ while not game_over:
                     
                 dDraw = False
         if event.type == pygame.KEYDOWN:
-            if event.key == K_d:
+            if event.key == K_c:
                 clear()
                 
     if draw:
