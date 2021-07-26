@@ -34,7 +34,7 @@ grid = [ ([0] * 40) for row in range(40) ]
 for i in range(len(grid)):
     for j in range(len(grid[0])):
         
-        grid[i][j] = Node((i,j), None)
+        grid[i][j] = Node(None, (i,j))
 
 
 
@@ -62,7 +62,9 @@ while not game_over:
             draw = False
         if event.type == pygame.KEYDOWN:
             if event.key == K_d:
-                grid_2.astar(False,screen)
+                x = grid_2.astar(False,screen)
+                for i in range(len(x)):
+                    pygame.draw.rect(screen, (0,0,255), pygame.Rect((grid_2.decrypt(x[i].pos), (15,15))))
 
     if draw:
         pos = pygame.mouse.get_pos()

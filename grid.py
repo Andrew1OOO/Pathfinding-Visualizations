@@ -1,6 +1,7 @@
 
+from sre_constants import SUCCESS
 from node import Node
-import pygame
+import pygame, copy
 
 class Grid:
     def __init__(self, grid):
@@ -37,35 +38,65 @@ class Grid:
 
         closed_list = []
         end = False
-        while(len(open_list) != 0 and end == False):
-            q = self.findMin(open_list)
+        count=0
+        endNode = self.grid[self.endPos[0]][self.endPos[1]]
+        while(len(open_list) > 0):
 
-            q = open_list.pop(open_list.index(q))
+            q = open_list[0]
+            q_i = 0
+            for index, item in enumerate(open_list):
+                if item.f < q.f:
+                    q = item
+                    q_i = index
+            
 
-            neighbors = (self.grid[q.pos[0]+1][q.pos[1]],self.grid[q.pos[0]-1][q.pos[1]],self.grid[q.pos[0]][q.pos[1]+1],self.grid[q.pos[0]][q.pos[1]-1])
+            open_list.pop(q_i)           
+
+
+            neighbors = [self.grid[q.pos[0]+1][q.pos[1]],self.grid[q.pos[0]-1][q.pos[1]],self.grid[q.pos[0]][q.pos[1]+1],self.grid[q.pos[0]][q.pos[1]-1]]
+            suc = []
             for i in range(4):
-                neighbors[i].parent = q
+                if(q != None and neighbors[i] not in closed_list and neighbors[i].active != 1):
+                    suc.append(neighbors[i])
+            
+            for i in range(len(suc)):
+                suc[i].parent = q
 
-            for i in range(len(neighbors)):
+            for i in range(len(suc)):
+                if(q == endNode):
+                    path = []
+                    current = q
+                    count = 0
+                    path.append(current)
+                    while (current.parent != None):
+                        path.append(current.parent)
+                        current = current.parent
+                        count +=1
+                    return path[::-1]
                 
-                if(neighbors[i].pos == self.grid[self.endPos[0]][self.endPos[1]].pos):
-                    end = True
-                neighbors[i].g = abs(q.g + (neighbors[i].pos[0] - q.pos[0])) + (neighbors[i].pos[1] - q.pos[1])
+                    
+                suc[i].g = abs(suc[i].pos[0] - self.startingPos[0])+ abs(suc[i].pos[1] - self.startingPos[0] )
 
-                neighbors[i].h = abs(self.grid[self.endPos[0]][self.endPos[1]].pos[0] - neighbors[i].pos[0]) + abs(self.grid[self.endPos[0]][self.endPos[1]].pos[1] - neighbors[i].pos[1])
+                suc[i].h = ((suc[i].pos[0] - self.endPos[0])**2) + ((suc[i].pos[1] - self.endPos[1])**2)
 
-                neighbors[i].f = neighbors[i].g + neighbors[i].h
+                suc[i].f = suc[i].g + suc[i].h
 
-                if(self.samePos(neighbors[i], open_list)):
-                    pass
-                
-                if(self.samePos(neighbors[i], closed_list)):
-                    pass
+                if(self.samePos(suc[i], open_list)):
+                    continue
+            
+                if(self.samePos(suc[i], closed_list)):
+                    continue
                 else:
-                    open_list.append(neighbors[i])
+                    open_list.append(suc[i])
+
+
+
             closed_list.append(q)
-        for i in range(len(open_list)):
-            pygame.draw.rect(screen, (0,0,255), pygame.Rect((self.decrypt((open_list[i].pos[0], open_list[i].pos[1])), (15,15))))
+        #for i in range(len(closed_list)):
+            #pygame.draw.rect(screen, (0,0,255), pygame.Rect((self.decrypt((closed_list[i].pos[0], open_list[i].pos[1])), (15,15))))
+    
+
+    
     def findMin(self,list1):
         min1 = Node((0,0), None)
         min1.f = 10000
