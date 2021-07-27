@@ -105,6 +105,9 @@ class Grid:
                         count +=1
                     return path[::-1]
                 
+                for closed_child in closed_list:
+                    if suc[i] == closed_child:
+                        continue
                     
                 suc[i].g = abs(suc[i].pos[0] - self.startingPos[0])+ abs(suc[i].pos[1] - self.startingPos[0] )
                 suc[i].h = ((suc[i].pos[0] - self.endPos[0])**2) + ((suc[i].pos[1] - self.endPos[1])**2)
@@ -116,16 +119,11 @@ class Grid:
                 pygame.time.delay(5)
                 pygame.display.update()
                 pygame.display.flip()
-                if(self.samePos(suc[i], open_list)):
-                    continue
-            
-                if(self.samePos(suc[i], closed_list)):
-                    continue
-                else:
-                    open_list.append(suc[i])
 
-
-
+                for open_node in open_list:
+                    if suc[i] == open_node and suc[i].g > open_node.g:
+                        continue
+                open_list.append(suc[i])
             closed_list.append(q)
         #for i in range(len(closed_list)):
             #pygame.draw.rect(screen, (0,0,255), pygame.Rect((self.decrypt((closed_list[i].pos[0], open_list[i].pos[1])), (15,15))))
