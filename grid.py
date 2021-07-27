@@ -90,7 +90,9 @@ class Grid:
             
             
             for i in range(len(suc)):
-                
+                for event in pygame.event.get():
+                    if event.type==pygame.QUIT:
+                        return [] 
                 if(q == endNode):
                     path = []
                     current = q
@@ -138,7 +140,14 @@ class Grid:
         #print(self.grid[self.startingPos[0]][self.startingPos[1]])
         while(len(unexplored) != 0):
             currentNode = self.minDis(unexplored)
-            unexplored.remove(currentNode)
+            for event in pygame.event.get():
+                if event.type==pygame.QUIT:
+                    return [] 
+            try:
+                unexplored.remove(currentNode)
+            except(ValueError):
+                print("could not find path")
+                return []
             if(currentNode == endNode):
                 
                 path = []
