@@ -92,8 +92,7 @@ while not game_over:
                     dDraw = True
                 else:
                     draw = True
-
-            if event.button == 2:
+            if event.button == 1:
                 pos = pygame.mouse.get_pos()
                 grid_2.grid[grid_2.encrypt(pos)[0]][grid_2.encrypt(pos)[1]].active = 2
             if event.button == 3:
